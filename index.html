@@ -1,1 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taller de Pictogramas: Multiplicando en la Vida Real</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0fdf4;
+      --card-bg: #ffffff;
+      --primary: #0284c7;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --radius: 20px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f0fdf4 40%, #f8fafc 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-family: 'Fredoka', cursive;
+      font-size: 2.2rem;
+      color: #0369a1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .main-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1150px;
+      width: 100%;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Barra Superior de Control */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    label {
+      font-family: 'Fredoka', cursive;
+      font-size: 1rem;
+      color: #0369a1;
+    }
+
+    select {
+      font-family: 'Fredoka', cursive;
+      font-size: 1rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Caja de Situación de la Vida Real */
+    .story-card {
+      background: #eff6ff;
+      border-left: 5px solid #0284c7;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+      line-height: 1.45;
+    }
+
+    .story-card strong {
+      color: #0369a1;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Clave / Leyenda del Pictograma */
+    .legend-card {
+      background: #fef3c7;
+      border: 2px dashed #f59e0b;
+      border-radius: 16px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .legend-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .legend-icon-badge {
+      font-size: 2.2rem;
+      background: #ffffff;
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      animation: wiggle 2s infinite ease-in-out;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-6deg); }
+      75% { transform: rotate(6deg); }
+    }
+
+    .legend-text {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #92400e;
+    }
+
+    .legend-text span {
+      background: #ffffff;
+      padding: 2px 10px;
+      border-radius: 8px;
+      color: #b45309;
+      border: 2px solid #fde68a;
+    }
+
+    /* Filas del Gráfico */
+    .chart-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .chart-row {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 150px 1fr 130px;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .chart-row.completed {
+      background: #ecfdf5;
+      border-color: #86efac;
+    }
+
+    .row-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .row-label {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    .row-target {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .row-target b {
+      color: #0369a1;
+      font-size: 1rem;
+    }
+
+    .icons-area {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      min-height: 48px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e1;
+    }
+
+    .picto-item {
+      font-size: 2rem;
+      cursor: pointer;
+      display: inline-block;
+      animation: popIn 0.25s ease-out;
+      transition: transform 0.15s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      80% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .picto-item:hover {
+      transform: scale(1.25);
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .btn-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-circle:active {
+      transform: scale(0.9);
+    }
+
+    .btn-add {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .btn-add:hover {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-sub {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .btn-sub:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Columna Derecha */
+    .math-card {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .math-card h3 {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.15rem;
+      color: #15803d;
+      margin-bottom: 6px;
+    }
+
+    .math-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .calc-row {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .calc-title {
+      font-weight: 800;
+      color: #0369a1;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .repeat-sum {
+      color: #d97706;
+      font-family: 'Fredoka', cursive;
+      font-size: 1rem;
+      word-break: break-all;
+    }
+
+    .mult-fact {
+      color: #15803d;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.1rem;
+      margin-top: 3px;
+    }
+
+    .progress-box {
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stars-display {
+      font-size: 1.8rem;
+      letter-spacing: 4px;
+      margin-top: 4px;
+    }
+
+    .btn-action {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.05rem;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-action:hover {
+      background: #0369a1;
+      transform: translateY(-2px);
+    }
+
+    .btn-pdf {
+      background: #10b981;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-pdf:hover {
+      background: #059669;
+    }
+
+    /* Modal de Ficha para Imprimir / PDF */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      border: 3px solid #10b981;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .sheet-header {
+      border-bottom: 2px dashed #cbd5e1;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sheet-header h2 {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.6rem;
+      color: #047857;
+    }
+
+    .sheet-date {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .sheet-legend {
+      background: #fef3c7;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+      color: #b45309;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+
+    .sheet-table th, .sheet-table td {
+      border: 1px solid #cbd5e1;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .sheet-table th {
+      background: #f1f5f9;
+      font-family: 'Fredoka', cursive;
+      color: #0369a1;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    /* ESTILOS DE IMPRESIÓN (PDF / PRINT) */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printArea, #printArea * {
+        visibility: visible;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border: none;
+      }
+      .sheet-actions {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .main-container {
+        grid-template-columns: 1fr;
+      }
+      .chart-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .row-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📊 Taller de Pictogramas: Multiplicando en la Vida Real</h1>
+    <p>Descubre datos cotidianos representando cantidades con símbolos y sumas repetidas</p>
+  </header>
+
+  <div class="main-container">
+    <!-- PANEL PRINCIPAL -->
+    <div class="panel">
+      <!-- Controles -->
+      <div class="controls-bar">
+        <div class="control-group">
+          <label for="themeSelect">📍 Situación Real:</label>
+          <select id="themeSelect" onchange="changeTheme()">
+            <option value="fruits">🧺 Frutas en el Canasto de Sofía</option>
+            <option value="animals">🚙 Animales en la Expedición Safari</option>
+            <option value="space">🚀 Suministros en la Base Espacial</option>
+            <option value="sports">🏆 Balones en el Torneo del Colegio</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="scaleSelect">🔢 Cada dibujo vale:</label>
+          <select id="scaleSelect" onchange="changeScale()">
+            <option value="2">2 en 2 (Tabla del 2)</option>
+            <option value="3">3 en 3 (Tabla del 3)</option>
+            <option value="4">4 en 4 (Tabla del 4)</option>
+            <option value="5" selected>5 en 5 (Tabla del 5)</option>
+            <option value="6">6 en 6 (Tabla del 6)</option>
+            <option value="7">7 en 7 (Tabla del 7)</option>
+            <option value="8">8 en 8 (Tabla del 8)</option>
+            <option value="9">9 en 9 (Tabla del 9)</option>
+            <option value="10">10 en 10 (Tabla del 10)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Contexto de la Vida Real -->
+      <div class="story-card" id="storyContext">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <!-- Clave Matemática -->
+      <div class="legend-card">
+        <div class="legend-content">
+          <div class="legend-icon-badge" id="legendEmoji">🍎</div>
+          <div class="legend-text">
+            CLAVE DEL PICTOGRAMA: 1 dibujo = <span id="legendVal">5</span> unidades
+          </div>
+        </div>
+        <div style="font-size: 0.9rem; font-weight: 800; color: #b45309;">
+          💡 Agrega o quita grupos con <b>+</b> y <b>−</b>
+        </div>
+      </div>
+
+      <!-- Filas del Gráfico -->
+      <div class="chart-box" id="chartBox"></div>
+    </div>
+
+    <!-- PANEL LATERAL -->
+    <div class="panel">
+      <div class="math-card">
+        <h3>🧮 De la Suma a la Multiplicación</h3>
+        <p style="font-size: 0.85rem; color: #475569; margin-bottom: 8px;">
+          Cada símbolo suma la misma cantidad una y otra vez:
+        </p>
+        <div class="math-breakdown" id="mathBreakdown"></div>
+      </div>
+
+      <div class="progress-box">
+        <h4 style="font-family:'Fredoka'; font-size:1.1rem; color:#0369a1;">Progreso del Reto</h4>
+        <div class="stars-display" id="starsDisplay">⭐⭐⭐</div>
+        <p id="progressText" style="font-size:0.9rem; font-weight:800; color:var(--muted); margin-top:4px;">
+          Completa todas las filas
+        </p>
+      </div>
+
+      <button class="btn-action" onclick="resetActivity(true)">
+        🔄 Nuevas Cantidades
+      </button>
+
+      <button class="btn-action btn-pdf" id="btnShowSummary" onclick="showCompletedSheet()" style="display:none;">
+        📄 Ver / Imprimir Ficha en PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL PARA GUARDAR E IMPRIMIR EL PICTOGRAMA TERMINADO (PDF) -->
+  <div class="overlay" id="sheetModal">
+    <div class="modal-sheet" id="printArea">
+      <div class="sheet-header">
+        <div>
+          <h2 id="sheetTitle">Registro Oficial del Pictograma</h2>
+          <div class="sheet-date" id="sheetDate">Fecha: Hoy</div>
+        </div>
+        <div style="font-size: 2.2rem;" id="sheetBadgeIcon">🧺</div>
+      </div>
+
+      <p style="font-size: 0.95rem; color: #334155; margin-bottom: 12px;" id="sheetStoryText"></p>
+
+      <div class="sheet-legend" id="sheetLegendText">
+        CLAVE: 1 dibujo = 5 unidades
+      </div>
+
+      <table class="sheet-table">
+        <thead>
+          <tr>
+            <th>Elemento</th>
+            <th>Dibujos en el Gráfico</th>
+            <th>Suma Repetida</th>
+            <th>Multiplicación</th>
+            <th>Total Real</th>
+          </tr>
+        </thead>
+        <tbody id="sheetTableBody"></tbody>
+      </table>
+
+      <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:10px 14px; font-size:0.9rem; color:#15803d; margin-bottom:14px;">
+        ✅ <strong>Demostración de Aprendizaje:</strong> El estudiante comprobó que multiplicar representa la adición iterada de grupos de igual tamaño correspondientes a la escala del pictograma.
+      </div>
+
+      <div class="sheet-actions">
+        <button class="btn-action btn-pdf" onclick="window.print()">
+          🖨️️ Imprimir / Guardar como PDF
+        </button>
+        <button class="btn-action" style="background:#64748b;" onclick="closeModal()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. EFECTOS DE SONIDO SINTÉTICOS (Web Audio API)
+       ========================================================================= */
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+
+        if (type === 'add') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(720, now + 0.09);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (type === 'remove') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } else if (type === 'rowComplete') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.08);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        } else if (type === 'win') {
+          const notes = [440, 554.37, 659.25, 880];
+          notes.forEach((freq, idx) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, now + (idx * 0.09));
+            g.gain.setValueAtTime(0.3, now + (idx * 0.09));
+            g.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.09) + 0.18);
+            o.start(now + (idx * 0.09));
+            o.stop(now + (idx * 0.09) + 0.19);
+          });
+        }
+      } catch (e) {}
+    }
+
+    /* =========================================================================
+       2. TEMAS Y SITUACIONES COTIDIANAS REALES
+       ========================================================================= */
+    const situations = {
+      fruits: {
+        title: "🧺 Frutas en la Cosecha de Sofía",
+        badge: "🧺",
+        story: "Sofía fue a la huerta familiar y llenó varios canastos para vender en el mercado del pueblo. Ayúdala a registrar cuántas frutas individuales recogió de cada clase.",
+        icon: "🍎",
+        categories: [
+          { name: "Manzanas Rojas", icon: "🍎" },
+          { name: "Plátanos Maduros", icon: "🍌" },
+          { name: "Naranjas Dulces", icon: "🍊" }
+        ]
+      },
+      animals: {
+        title: "🚙 Expedición en la Reserva Natural",
+        badge: "🚙",
+        story: "Mateo y su clase hicieron un recorrido fotográfico matutino por la sabana de la reserva. El guía les pidió registrar en un pictograma todos los animales avistados en manada.",
+        icon: "🦁",
+        categories: [
+          { name: "Leones Fuertes", icon: "🦁" },
+          { name: "Monos Traviesos", icon: "🐒" },
+          { name: "Elefantes Grandes", icon: "🐘" }
+        ]
+      },
+      space: {
+        title: "🚀 Misión a la Estación Espacial Alfa",
+        badge: "🚀",
+        story: "El centro de control espacial cargó en sus naves los equipos científicos y provisiones que los astronautas necesitarán durante su investigación de este mes.",
+        icon: "⭐",
+        categories: [
+          { name: "Cohetes Ligeros", icon: "🚀" },
+          { name: "Estrellas Guía", icon: "⭐" },
+          { name: "Sondas Satelitales", icon: "🛰️" }
+        ]
+      },
+      sports: {
+        title: "🏆 Inventario del Torneo Deportivo Escolar",
+        badge: "🏆",
+        story: "El profesor Carlos abrió el almacén de educación física para repartir los balones entre los equipos de 4° y 5° grado que competirán en el campeonato anual.",
+        icon: "⚽",
+        categories: [
+          { name: "Balones de Fútbol", icon: "⚽" },
+          { name: "Balones de Baloncesto", icon: "🏀" },
+          { name: "Pelotas de Tenis", icon: "🎾" }
+        ]
+      }
+    };
+
+    let currentScale = 5;
+    let currentThemeKey = 'fruits';
+    let rowData = [];
+
+    /* =========================================================================
+       3. GESTIÓN Y RENDERIZADO
+       ========================================================================= */
+    function resetActivity(randomize = true) {
+      const theme = situations[currentThemeKey];
+      document.getElementById('legendEmoji').textContent = theme.icon;
+      document.getElementById('legendVal').textContent = currentScale;
+
+      // Narrativa de la situación real
+      document.getElementById('storyContext').innerHTML = `
+        <strong>${theme.title}</strong>
+        ${theme.story}
+      `;
+
+      if (randomize) {
+        rowData = theme.categories.map(cat => {
+          const countIcons = Math.floor(Math.random() * 5) + 2; // de 2 a 6 símbolos
+          return {
+            name: cat.name,
+            icon: cat.icon,
+            targetTotal: countIcons * currentScale,
+            neededIcons: countIcons,
+            currentIcons: 0
+          };
+        });
+      } else {
+        rowData.forEach(r => {
+          r.targetTotal = r.neededIcons * currentScale;
+          r.currentIcons = 0;
+        });
+      }
+
+      document.getElementById('btnShowSummary').style.display = 'none';
+      renderChart();
+      updateMathBreakdown();
+      checkProgress();
+    }
+
+    function renderChart() {
+      const box = document.getElementById('chartBox');
+      box.innerHTML = '';
+
+      rowData.forEach((row, idx) => {
+        const isCompleted = (row.currentIcons * currentScale) === row.targetTotal;
+        const rowEl = document.createElement('div');
+        rowEl.className = `chart-row ${isCompleted ? 'completed' : ''}`;
+
+        // Info
+        const infoEl = document.createElement('div');
+        infoEl.className = 'row-info';
+        infoEl.innerHTML = `
+          <div class="row-label">${row.icon} ${row.name}</div>
+          <div class="row-target">Objetivo real: <b>${row.targetTotal}</b></div>
+        `;
+
+        // Área interactiva de pictogramas
+        const iconsArea = document.createElement('div');
+        iconsArea.className = 'icons-area';
+
+        for (let i = 0; i < row.currentIcons; i++) {
+          const picto = document.createElement('span');
+          picto.className = 'picto-item';
+          picto.textContent = row.icon;
+          picto.title = `1 dibujo = ${currentScale}`;
+          picto.onclick = () => removeIcon(idx);
+          iconsArea.appendChild(picto);
+        }
+
+        if (row.currentIcons === 0) {
+          iconsArea.innerHTML = `<span style="color:#94a3b8; font-size:0.85rem; font-weight:700;">Presiona (+) para agregar grupos de ${currentScale}</span>`;
+        }
+
+        // Acciones
+        const actionsEl = document.createElement('div');
+        actionsEl.className = 'row-actions';
+
+        const btnSub = document.createElement('button');
+        btnSub.className = 'btn-circle btn-sub';
+        btnSub.textContent = '−';
+        btnSub.title = `Restar ${currentScale}`;
+        btnSub.onclick = () => removeIcon(idx);
+
+        const btnAdd = document.createElement('button');
+        btnAdd.className = 'btn-circle btn-add';
+        btnAdd.textContent = '+';
+        btnAdd.title = `Sumar ${currentScale}`;
+        btnAdd.onclick = () => addIcon(idx);
+
+        actionsEl.appendChild(btnSub);
+        actionsEl.appendChild(btnAdd);
+
+        rowEl.appendChild(infoEl);
+        rowEl.appendChild(iconsArea);
+        rowEl.appendChild(actionsEl);
+
+        box.appendChild(rowEl);
+      });
+    }
+
+    function addIcon(idx) {
+      if (rowData[idx].currentIcons < 10) {
+        rowData[idx].currentIcons++;
+        playSound('add');
+        renderChart();
+        updateMathBreakdown();
+        checkRowStatus(idx);
+        checkProgress();
+      }
+    }
+
+    function removeIcon(idx) {
+      if (rowData[idx].currentIcons > 0) {
+        rowData[idx].currentIcons--;
+        playSound('remove');
+        renderChart();
+        updateMathBreakdown();
+        checkProgress();
+      }
+    }
+
+    function checkRowStatus(idx) {
+      const row = rowData[idx];
+      if ((row.currentIcons * currentScale) === row.targetTotal) {
+        playSound('rowComplete');
+      }
+    }
+
+    function updateMathBreakdown() {
+      const container = document.getElementById('mathBreakdown');
+      container.innerHTML = '';
+
+      rowData.forEach((row) => {
+        const count = row.currentIcons;
+        const total = count * currentScale;
+        const target = row.targetTotal;
+
+        const card = document.createElement('div');
+        card.className = 'calc-row';
+
+        let repeatSumText = "";
+        if (count === 0) {
+          repeatSumText = "0 (sin dibujos aún)";
+        } else {
+          repeatSumText = Array(count).fill(currentScale).join(" + ") + ` = ${total}`;
+        }
+
+        let statusHint = "";
+        if (total === target) {
+          statusHint = `<span style="color:#15803d; font-weight:800;">¡Exacto! ✔️</span>`;
+        } else if (total < target) {
+          statusHint = `<span style="color:#d97706; font-weight:800;">Faltan ${target - total}</span>`;
+        } else {
+          statusHint = `<span style="color:#dc2626; font-weight:800;">Te pasaste (+${total - target})</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="calc-title">
+            <span>${row.icon} ${row.name}</span>
+            ${statusHint}
+          </div>
+          <div class="repeat-sum">
+            <b>Suma repetida:</b> ${repeatSumText}
+          </div>
+          <div class="mult-fact">
+            <b>Multiplicación:</b> ${count} veces ${currentScale} = ${count} × ${currentScale} = <b>${total}</b>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function checkProgress() {
+      const allDone = rowData.every(r => (r.currentIcons * currentScale) === r.targetTotal);
+      const completedCount = rowData.filter(r => (r.currentIcons * currentScale) === r.targetTotal).length;
+
+      document.getElementById('progressText').textContent = `${completedCount} de ${rowData.length} completadas correctamente`;
+
+      if (allDone) {
+        playSound('win');
+        document.getElementById('btnShowSummary').style.display = 'flex';
+        showCompletedSheet();
+      }
+    }
+
+    function changeTheme() {
+      currentThemeKey = document.getElementById('themeSelect').value;
+      resetActivity(true);
+    }
+
+    function changeScale() {
+      currentScale = parseInt(document.getElementById('scaleSelect').value);
+      resetActivity(false);
+    }
+
+    /* =========================================================================
+       4. VISTA PREVIA IMPRIMIBLE / GUARDAR PDF
+       ========================================================================= */
+    function showCompletedSheet() {
+      const theme = situations[currentThemeKey];
+      document.getElementById('sheetTitle').textContent = theme.title;
+      document.getElementById('sheetBadgeIcon').textContent = theme.badge;
+      document.getElementById('sheetStoryText').textContent = theme.story;
+      document.getElementById('sheetLegendText').textContent = `CLAVE DEL PICTOGRAMA: 1 dibujo = ${currentScale} unidades reales`;
+      
+      const now = new Date();
+      document.getElementById('sheetDate').textContent = `Fecha de resolución: ${now.toLocaleDateString()}`;
+
+      const tbody = document.getElementById('sheetTableBody');
+      tbody.innerHTML = '';
+
+      rowData.forEach(row => {
+        const count = row.currentIcons;
+        const total = count * currentScale;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${row.icon} ${row.name}</strong></td>
+          <td style="font-size:1.3rem;">${row.icon.repeat(count)} (${count} dibujos)</td>
+          <td style="font-family:'Fredoka'; color:#b45309;">${Array(count).fill(currentScale).join(" + ")}</td>
+          <td style="font-family:'Fredoka'; color:#047857; font-weight:700;">${count} × ${currentScale}</td>
+          <td><strong style="color:#0369a1; font-size:1.1rem;">${total}</strong></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('sheetModal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('sheetModal').classList.remove('show');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      resetActivity(true);
+    });
+  </script>
+</body>
+</html>
